@@ -74,8 +74,10 @@ export const forceModPermission = () => {
         return response;
     });
 
-    // These two run site-wide, so only touch them on the viewer card page -
-    // forcing them elsewhere surfaces moderator controls that do not work.
+    // These two are queried site-wide, so they are only touched on the viewer card page to
+    // keep the effect contained. ChannelPermissionSet returns aliased fields (permission0,
+    // permission1, ...) whose meaning is not visible in the persisted query, so every boolean
+    // is flipped rather than a specific one.
     gqlClient.setResponseHook('UserHasChannelPermission', async(request, response) => {
         if (!isViewerCardPage()) return response;
         assignPropertyIfValid(response?.data?.channel, 'hasPermission', true);

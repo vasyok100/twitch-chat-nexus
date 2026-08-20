@@ -2,12 +2,13 @@
 
 A browser extension that provides features to enhance Twitch chat experience.
 
-> **Fork note.** In August 2026 the chat history stopped working and showed "Access denied".
-> Twitch had added new permission queries that the extension did not intercept, so its UI was
-> blocked even though the server still returned the messages. This fork hooks those queries in
-> `src/injected/interceptor/modules/ChatLogView/forceModPermission.ts`:
+> **Fork note.** Since August 2026 the chat history shows "Access denied". Twitch gates the
+> mod-logs panel behind GraphQL queries this extension does not intercept, so Twitch's own UI
+> blocks the panel even though the server still returns the data — `viewerCardModLogs.messages`
+> still comes back as a normal connection. This fork adds response hooks in
+> `src/injected/interceptor/modules/ChatLogView/forceModPermission.ts` for
 > `ModLogsAccessQuery`, `ViewerCardModLogs`, `UserHasChannelPermission` and `ChannelPermissionSet`.
-> The last two are applied only on `/viewercard/` pages, since they are used site-wide.
+> The last two are queried site-wide, so they are only touched on `/viewercard/` pages.
 > Build from source — the store release does not contain this fix.
 > Upstream report: https://github.com/fractalo/twitch-chat-nexus/issues/4
 

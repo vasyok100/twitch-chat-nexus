@@ -7,8 +7,8 @@ A browser extension that provides features to enhance Twitch chat experience.
 > blocks the panel even though the server still returns the data — `viewerCardModLogs.messages`
 > still comes back as a normal connection. This fork adds response hooks in
 > `src/injected/interceptor/modules/ChatLogView/forceModPermission.ts` for
-> `ModLogsAccessQuery`, `ViewerCardModLogs`, `UserHasChannelPermission` and `ChannelPermissionSet`.
-> The last two are queried site-wide, so they are only touched on `/viewercard/` pages.
+> `ModLogsAccessQuery`, `ViewerCardModLogs` and `ChannelPermissionSet`.
+> The last one is queried site-wide, so it is only touched on `/viewercard/` pages.
 > Build from source — the store release does not contain this fix.
 > Upstream report: https://github.com/fractalo/twitch-chat-nexus/issues/4
 

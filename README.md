@@ -2,56 +2,38 @@
 
 A browser extension that provides features to enhance Twitch chat experience.
 
-> **Fork note.** Since August 2026 the chat history shows "Access denied". Twitch gates the
-> mod-logs panel behind GraphQL queries this extension does not intercept, so Twitch's own UI
-> blocks the panel even though the server still returns the data — `viewerCardModLogs.messages`
-> still comes back as a normal connection. This fork adds response hooks in
-> `src/injected/interceptor/modules/ChatLogView/forceModPermission.ts` for
-> `ModLogsAccessQuery`, `ViewerCardModLogs` and `ChannelPermissionSet`.
+> **Fork note.** Since August 2026 the chat history shows "Access denied": Twitch gates the
+> mod-logs panel behind GraphQL queries this extension does not intercept, although the server
+> still returns the messages. This fork hooks `ModLogsAccessQuery`, `ViewerCardModLogs` and
+> `ChannelPermissionSet` in
+> [`forceModPermission.ts`](src/injected/interceptor/modules/ChatLogView/forceModPermission.ts).
 > The last one is queried site-wide, so it is only touched on `/viewercard/` pages.
-> The store listings do not have this fix. Grab a prebuilt zip from
-> [Releases](https://github.com/vasyok100/twitch-chat-nexus/releases/latest), or build it
-> yourself — but load `dist-chrome`, **not** the repository root; see Build below.
-> Upstream report: https://github.com/fractalo/twitch-chat-nexus/issues/4
+> Upstream report: [fractalo/twitch-chat-nexus#4](https://github.com/fractalo/twitch-chat-nexus/issues/4)
 
 ## Features
-- View your chat history
+- View your chat history — button at the bottom of the chat window
 - Adds an area to the chat window where you can collect chats of interest
 - Indicates in color in the chat text box whether your chat has been sent successfully
+
+## Install
+Download the zip from [Releases](https://github.com/vasyok100/twitch-chat-nexus/releases/latest)
+and load it unpacked:
+
+- Chrome / Brave / Edge: `chrome://extensions` → Developer mode → Load unpacked
+- Firefox: `about:debugging#/runtime/this-firefox` → Load Temporary Add-on → any file in the folder
+
+The upstream [Chrome Web Store](https://chrome.google.com/webstore/detail/twitch-chat-nexus/oopcjaklhenijofoanbpchndknfadldn)
+and [Firefox](https://addons.mozilla.org/firefox/addon/twitch-chat-nexus/) listings do **not** have
+this fix. If one is installed, disable it first, or both will run on the same page.
 
 ## Build
 ```
 npm install
-npm run postinstall
 npm run build
 ```
 
-The output is written to `dist-chrome/` and `dist-firefox/`. Load **that folder** as an unpacked
-extension — not the repository root. The `manifest.json` in the root is the build input and points
-at TypeScript sources, so loading the root gives an extension that installs but does nothing: no
-chat history icon appears.
-
-- Chrome / Brave / Edge: `chrome://extensions` → enable Developer mode → Load unpacked → `dist-chrome`
-- Firefox: `about:debugging#/runtime/this-firefox` → Load Temporary Add-on → pick any file inside `dist-firefox`
-
-The history icon is added at the bottom of the chat window. Its position can be moved to the chat
-settings menu in the extension options.
-
-## Install
-
-Download the zip from [Releases](https://github.com/vasyok100/twitch-chat-nexus/releases/latest)
-and load it unpacked, as described under Build above.
-
-> ⚠️ **Do not install from the stores below.** They serve the original extension, which does not
-> have this fix — the chat history there still shows "Access denied". They are listed only as
-> links to the upstream project. If you already have the store version installed, **disable it**
-> before loading this one, otherwise both run on the same page at once.
-
-Upstream releases (without the fix):
-
-[![Available in the Chrome Web Store](https://github-production-user-asset-6210df.s3.amazonaws.com/42487844/237139321-1569748d-9179-4bc8-93d0-332f7d3f8eb6.png)](https://chrome.google.com/webstore/detail/twitch-chat-nexus/oopcjaklhenijofoanbpchndknfadldn)
-
-[![get-the-addon](https://github-production-user-asset-6210df.s3.amazonaws.com/42487844/293645728-1792c780-9716-43d2-b416-bc2ab02678ba.png)](https://addons.mozilla.org/firefox/addon/twitch-chat-nexus/)
+Output goes to `dist-chrome/` and `dist-firefox/`; load one of those, not the repository root — the
+root `manifest.json` is the build input and points at TypeScript sources.
 
 ## Documentation
 https://twitch-chat-nexus.gitbook.io/docs/

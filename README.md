@@ -38,6 +38,17 @@ The history icon is added at the bottom of the chat window. Its position can be 
 settings menu in the extension options.
 
 ## Install
+
+Download the zip from [Releases](https://github.com/vasyok100/twitch-chat-nexus/releases/latest)
+and load it unpacked, as described under Build above.
+
+> ⚠️ **Do not install from the stores below.** They serve the original extension, which does not
+> have this fix — the chat history there still shows "Access denied". They are listed only as
+> links to the upstream project. If you already have the store version installed, **disable it**
+> before loading this one, otherwise both run on the same page at once.
+
+Upstream releases (without the fix):
+
 [![Available in the Chrome Web Store](https://github-production-user-asset-6210df.s3.amazonaws.com/42487844/237139321-1569748d-9179-4bc8-93d0-332f7d3f8eb6.png)](https://chrome.google.com/webstore/detail/twitch-chat-nexus/oopcjaklhenijofoanbpchndknfadldn)
 
 [![get-the-addon](https://github-production-user-asset-6210df.s3.amazonaws.com/42487844/293645728-1792c780-9716-43d2-b416-bc2ab02678ba.png)](https://addons.mozilla.org/firefox/addon/twitch-chat-nexus/)

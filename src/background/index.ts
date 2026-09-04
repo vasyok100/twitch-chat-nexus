@@ -4,15 +4,32 @@ import { setupDefaultChatFilters } from "./storageInitializers";
  * to bypass async loader of crxjs
  * https://github.com/crxjs/chrome-extension-tools/issues/391
  */
-chrome.scripting.registerContentScripts([
-    {
-        id: "tcn_early_injector",
-        js: ['earlyInjector.js'],
-        matches: ["*://*.twitch.tv/*"],
-        runAt: "document_start",
-        allFrames: true,
+const earlyInjectorScript: chrome.scripting.RegisteredContentScript = {
+    id: "tcn_early_injector",
+    js: ['earlyInjector.js'],
+    matches: ["*://*.twitch.tv/*"],
+    runAt: "document_start",
+    allFrames: true,
+};
+
+/**
+ * Registered content scripts persist across browser restarts, so registering
+ * unconditionally fails with "Duplicate script ID" on every service worker
+ * startup after the first one.
+ */
+(async () => {
+    try {
+        const registered = await chrome.scripting.getRegisteredContentScripts();
+
+        if (registered.some(script => script.id === earlyInjectorScript.id)) {
+            await chrome.scripting.updateContentScripts([earlyInjectorScript]);
+        } else {
+            await chrome.scripting.registerContentScripts([earlyInjectorScript]);
+        }
+    } catch (error) {
+        console.error('could not register the early injector content script.', error);
     }
-]);
+})();
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (sender.id !== chrome.runtime.id) {
@@ -36,4 +53,3 @@ chrome.runtime.onInstalled.addListener((details) => {
         }
     }
 });
-

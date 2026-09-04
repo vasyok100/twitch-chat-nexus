@@ -58,7 +58,7 @@ export const forceModPermission = () => {
     // ModLogsTargetedActionsError/UNAUTHORIZED, which breaks rendering of the whole
     // panel. Only the message list is needed here, so blank the rest out.
     gqlClient.setResponseHook('ViewerCardModLogs', async(request, response) => {
-        const modLogs = response?.data?.viewerCardModLogs;
+        const modLogs: unknown = response?.data?.viewerCardModLogs;
         if (isRecord(modLogs)) {
             Object.entries(modLogs).forEach(([key, value]) => {
                 if (isRecord(value) && value.__typename === 'ModLogsTargetedActionsError') {
